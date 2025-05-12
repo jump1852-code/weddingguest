@@ -97,28 +97,24 @@
         return;
       }
 
-      const url = "https://script.google.com/macros/s/AKfycbxhAzwTSR0Bv7RbwvBSg6TQbhuM1QoeaN7NcUBxHMCYjsK6n3t5Q21tCQ6AC_5-rPfBjA/exec"; // ← Replace this
+      const formData = new URLSearchParams();
+      formData.append("name", name);
+      formData.append("personType", personType);
+      formData.append("relation", relation);
+      formData.append("detailType", detailType);
 
-      const data = {
-        name: name,
-        personType: personType,
-        relation: relation,
-        detailType: detailType
-      };
+      const url = "https://script.google.com/macros/s/AKfycbyhthZQ5gEDokIMTQrbPaBVedM5Nc0gvgxV43Yg-ihxwqEeLuzo_Jv2L_wlcB7rlTbGAA/exec";
 
       fetch(url, {
         method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      }).then(res => {
-        if (res.ok) {
-          document.getElementById('message').textContent = "ลงทะเบียนสำเร็จ ขอบคุณค่ะ/ครับ!";
-        } else {
-          document.getElementById('message').textContent = "เกิดข้อผิดพลาด โปรดลองใหม่";
-        }
-      }).catch(err => {
+        body: formData
+      })
+      .then(res => res.text())
+      .then(response => {
+        document.getElementById('message').textContent = "ลงทะเบียนสำเร็จ ขอบคุณค่ะ/ครับ!";
+        console.log("Response:", response);
+      })
+      .catch(err => {
         console.error(err);
         document.getElementById('message').textContent = "ไม่สามารถเชื่อมต่อได้";
       });
