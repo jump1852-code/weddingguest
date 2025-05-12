@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Wedding Guest Registration</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #fff0f6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .container {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    input, select, button {
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.75rem;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #f43f5e;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #e11d48;
+    }
+
+    h2 {
+      color: #be123c;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>ลงทะเบียนแขกงานแต่ง</h2>
+
+    <label for="name">ชื่อของคุณ</label>
+    <input type="text" id="name" placeholder="กรอกชื่อของคุณ">
+
+    <label for="person">ฝ่ายที่คุณเกี่ยวข้อง</label>
+    <select id="person">
+      <option value="groom">เจ้าบ่าว</option>
+      <option value="bride">เจ้าสาว</option>
+    </select>
+
+    <label for="relation">ความสัมพันธ์</label>
+    <select id="relation">
+      <option value="friend">เพื่อน</option>
+      <option value="relative">ญาติ</option>
+    </select>
+
+    <label for="detail">ประเภทเพิ่มเติม</label>
+    <select id="detail">
+      <option value="work">ที่ทำงาน</option>
+      <option value="bachelor">ป.ตรี</option>
+      <option value="master">ป.โท</option>
+      <option value="other">อื่นๆ</option>
+      <option value="father">ฝั่งพ่อ</option>
+      <option value="mother">ฝั่งแม่</option>
+    </select>
+
+    <button onclick="submitToSheet()">ลงทะเบียน</button>
+
+    <p id="message" style="margin-top: 1rem; color: green;"></p>
+  </div>
+
+  <script>
+    function submitToSheet() {
+      const name = document.getElementById('name').value.trim();
+      const personType = document.getElementById('person').value;
+      const relation = document.getElementById('relation').value;
+      const detailType = document.getElementById('detail').value;
+
+      if (!name) {
+        alert("กรุณากรอกชื่อ");
+        return;
+      }
+
+      const url = "https://script.google.com/macros/s/AKfycbxhAzwTSR0Bv7RbwvBSg6TQbhuM1QoeaN7NcUBxHMCYjsK6n3t5Q21tCQ6AC_5-rPfBjA/exec"; // ← Replace this
+
+      const data = {
+        name: name,
+        personType: personType,
+        relation: relation,
+        detailType: detailType
+      };
+
+      fetch(url, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }).then(res => {
+        if (res.ok) {
+          document.getElementById('message').textContent = "ลงทะเบียนสำเร็จ ขอบคุณค่ะ/ครับ!";
+        } else {
+          document.getElementById('message').textContent = "เกิดข้อผิดพลาด โปรดลองใหม่";
+        }
+      }).catch(err => {
+        console.error(err);
+        document.getElementById('message').textContent = "ไม่สามารถเชื่อมต่อได้";
+      });
+    }
+  </script>
+</body>
+</html>
