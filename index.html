@@ -1,124 +1,21 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-  <meta charset="UTF-8">
-  <title>Wedding Guest Registration</title>
-  <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      background: #fff0f6;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-    }
+function submitToSheet() {
+  const formData = new URLSearchParams();
+  formData.append("name", document.getElementById('name').value.trim());
+  formData.append("personType", document.getElementById('person').value);
+  formData.append("relation", document.getElementById('relation').value);
+  formData.append("detailType", document.getElementById('detail').value);
 
-    .container {
-      background: white;
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-    }
-
-    input, select, button {
-      width: 100%;
-      margin-top: 1rem;
-      padding: 0.75rem;
-      border-radius: 0.5rem;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
-
-    button {
-      background-color: #f43f5e;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #e11d48;
-    }
-
-    h2 {
-      color: #be123c;
-      margin-bottom: 1rem;
-      text-align: center;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="container">
-    <h2>ลงทะเบียนแขกงานแต่ง</h2>
-
-    <label for="name">ชื่อของคุณ</label>
-    <input type="text" id="name" placeholder="กรอกชื่อของคุณ">
-
-    <label for="person">ฝ่ายที่คุณเกี่ยวข้อง</label>
-    <select id="person">
-      <option value="groom">เจ้าบ่าว</option>
-      <option value="bride">เจ้าสาว</option>
-    </select>
-
-    <label for="relation">ความสัมพันธ์</label>
-    <select id="relation">
-      <option value="friend">เพื่อน</option>
-      <option value="relative">ญาติ</option>
-    </select>
-
-    <label for="detail">ประเภทเพิ่มเติม</label>
-    <select id="detail">
-      <option value="work">ที่ทำงาน</option>
-      <option value="bachelor">ป.ตรี</option>
-      <option value="master">ป.โท</option>
-      <option value="other">อื่นๆ</option>
-      <option value="father">ฝั่งพ่อ</option>
-      <option value="mother">ฝั่งแม่</option>
-    </select>
-
-    <button onclick="submitToSheet()">ลงทะเบียน</button>
-
-    <p id="message" style="margin-top: 1rem; color: green;"></p>
-  </div>
-
-  <script>
-    function submitToSheet() {
-      const name = document.getElementById('name').value.trim();
-      const personType = document.getElementById('person').value;
-      const relation = document.getElementById('relation').value;
-      const detailType = document.getElementById('detail').value;
-
-      if (!name) {
-        alert("กรุณากรอกชื่อ");
-        return;
-      }
-
-      const formData = new URLSearchParams();
-      formData.append("name", name);
-      formData.append("personType", personType);
-      formData.append("relation", relation);
-      formData.append("detailType", detailType);
-
-      const url = "https://script.google.com/macros/s/AKfycbyhthZQ5gEDokIMTQrbPaBVedM5Nc0gvgxV43Yg-ihxwqEeLuzo_Jv2L_wlcB7rlTbGAA/exec";
-
-      fetch(url, {
-        method: "POST",
-        body: formData
-      })
-      .then(res => res.text())
-      .then(response => {
-        document.getElementById('message').textContent = "ลงทะเบียนสำเร็จ ขอบคุณค่ะ/ครับ!";
-        console.log("Response:", response);
-      })
-      .catch(err => {
-        console.error(err);
-        document.getElementById('message').textContent = "ไม่สามารถเชื่อมต่อได้";
-      });
-    }
-  </script>
-</body>
-</html>
+  fetch("https://script.google.com/macros/s/AKfycbwTACWiL-zV7x8nW8qXUNMUofMc4k6tpwEoV3-R1m5Qufp15ZIYxkecxZkIprtbFPGQDg/exec", {
+    method: "POST",
+    body: formData
+  })
+  .then(res => res.text())
+  .then(response => {
+    document.getElementById('message').textContent = "ลงทะเบียนสำเร็จ ขอบคุณค่ะ/ครับ!";
+    console.log("Response:", response);
+  })
+  .catch(err => {
+    console.error(err);
+    document.getElementById('message').textContent = "ไม่สามารถเชื่อมต่อได้";
+  });
+}
