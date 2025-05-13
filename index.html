@@ -87,27 +87,21 @@
 
   <script>
     function submitToSheet() {
-      const name = document.getElementById('name').value.trim();
-      const personType = document.getElementById('person').value;
-      const relation = document.getElementById('relation').value;
-      const detailType = document.getElementById('detail').value;
+      const data = {
+        name: document.getElementById('name').value.trim(),
+        personType: document.getElementById('person').value,
+        relation: document.getElementById('relation').value,
+        detailType: document.getElementById('detail').value
+      };
 
-      if (!name) {
-        alert("กรุณากรอกชื่อ");
-        return;
-      }
-
-      const formData = new URLSearchParams();
-      formData.append("name", name);
-      formData.append("personType", personType);
-      formData.append("relation", relation);
-      formData.append("detailType", detailType);
-
-      const url = "https://script.google.com/macros/s/AKfycbwTACWiL-zV7x8nW8qXUNMUofMc4k6tpwEoV3-R1m5Qufp15ZIYxkecxZkIprtbFPGQDg/exec";
+      const url = "https://script.google.com/macros/s/AKfycbwwfjU3AVGHbGYXTzGRiFgTbMl7u4hKHiqKhNHjq6gQs4JA_vdYIQQ8T3LwxXfYrvW7AA/exec";
 
       fetch(url, {
         method: "POST",
-        body: formData
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify(data)
       })
       .then(res => res.text())
       .then(response => {
